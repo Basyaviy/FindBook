@@ -11,9 +11,12 @@ import org.junit.jupiter.api.Test;
 
 class UnZipTest {
 	final String resourcePath = getClass().getResource("/").getPath();
+	final static String workDir = "c:/temp/";
 
 	@Test
 	final void testMultipleZip() {
+		Utils.deleteNonEmptyDirectory(workDir);
+		File zipFile = new File(workDir+"test.zip");
 //		prepare data for packing
 		List<File> listFiles = new ArrayList<>();
 		String[] expected = {"listOfFiles.txt", "listOfFilesNec.txt","parsedByTags.txt"};
@@ -22,14 +25,16 @@ class UnZipTest {
 		}
 		
 //		packing
-		UnZip.multipleZip(resourcePath+"test.zip", listFiles);
+		UnZip.multipleZip(zipFile.getAbsolutePath(), listFiles);
 		
 //		unpacking
-		String unpackDir = "c:/temp/";
-		UnZip.unpack(resourcePath+"test.zip", unpackDir);
+		UnZip.unpack(zipFile.getAbsolutePath(), workDir);
+		//delete archive
+		zipFile.delete();
+		
 		
 //		get unpacked files for assertion
-		File dir = new File(unpackDir);
+		File dir = new File(workDir);
 		File[] files = dir.listFiles();
 		String[] actual = new String[files.length];
 		for(int i=0;i<files.length;i++) {
@@ -37,30 +42,33 @@ class UnZipTest {
 		}
 		
 		assertArrayEquals(expected, actual);
+		Utils.deleteNonEmptyDirectory(workDir);
 	}
 
 	@Test
 	final void testUnpack() {
+		Utils.deleteNonEmptyDirectory(workDir);
 		String expected = "Gektor_Hyu_Manro_Otkryitaya_dver.fb2";
-		String unpackDir = "c:/temp";
-		UnZip.unpack(resourcePath+"/testLib/books2.zip", expected, unpackDir);
+		UnZip.unpack(resourcePath+"/testLib/books2.zip", workDir, expected);
 		
-		File file = new File(unpackDir);
+		File file = new File(workDir);
 //		optimistic
 		String actual = file.listFiles()[0].getName();
 		assertEquals(expected, actual);
+		Utils.deleteNonEmptyDirectory(workDir);
 	}
 	
 	@Test
 	final void testUnpackNullOutput() {
+		Utils.deleteNonEmptyDirectory(workDir);
 		String expected = "Gektor_Hyu_Manro_Otkryitaya_dver.fb2";
-		String unpackDir = "c:/temp";
-		UnZip.unpack(resourcePath+"/testLib/books2.zip", expected, null);
+		UnZip.unpack(resourcePath+"/testLib/books2.zip", null, expected);
 		
-		File file = new File(unpackDir);
+		File file = new File(workDir);
 //		optimistic
 		String actual = file.listFiles()[0].getName();
 		assertEquals(expected, actual);
+		Utils.deleteNonEmptyDirectory(workDir);
 	}
 
 	@Test

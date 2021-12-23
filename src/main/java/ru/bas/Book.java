@@ -53,22 +53,56 @@ public class Book {
 	@Column(name="lang")
 	private String lang;
 	
+	@Column(name="path")
+	private String path;
 	
-	public Book() {
-	}
+	@Column(name="file_name")
+	private String fileName;
+
+	@Column(name="size")
+	private long size;
 	
-	
-	public Book(String genre, String firstName, String lastName, String bookTitle, String annotation, String keywords,
+	public Book(String lastName, String firstName, String bookTitle, String genre, String annotation, String keywords,
 			String date, String lang) {
-		super();
-		this.genre = genre;
-		this.firstName = firstName;
+		//inner data
 		this.lastName = lastName;
+		this.firstName = firstName;
 		this.bookTitle = bookTitle;
+		this.genre = genre;
 		this.annotation = annotation;
 		this.keywords = keywords;
 		this.date = date;
 		this.lang = lang;
+	}
+	
+	public String getFileName() {
+		return fileName;
+	}
+
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
+
+	public String getPath() {
+		return path;
+	}
+
+
+	public void setPath(String path) {
+		this.path = path;
+	}
+
+
+	public long getSize() {
+		return size;
+	}
+
+
+	public void setSize(long size) {
+		this.size = size;
+	}
+
+	public Book() {
 	}
 
 	public int getId() {
@@ -128,12 +162,11 @@ public class Book {
 		this.lang = lang;
 	}
 
-
 	@Override
 	public String toString() {
 		return "Book [id=" + id + ", lastName=" + lastName + ", firstName=" + firstName + ", bookTitle=" + bookTitle
 				+ ", genre=" + genre + ", annotation=" + annotation + ", keywords=" + keywords + ", date=" + date
-				+ ", lang=" + lang + "]";
+				+ ", lang=" + lang + ", path=" + path + ", fileName=" + fileName + ", size=" + size + "]";
 	}
 
 }

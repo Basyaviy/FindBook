@@ -1,16 +1,21 @@
 package ru.bas;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
 import ru.bas.zip.UnZip;
+import ru.bas.zip.Utils;
 
 public class GetFiles {
 	private static ArrayList<File> listFB2 = new ArrayList<>();
@@ -31,22 +36,35 @@ public class GetFiles {
 		Session session = factory.getCurrentSession();
 
 		try {
-//			processFB2FileList(listFB2, session);
+			processFB2FileList(listFB2, session, null);
 			processZIPFileList(listZIP, session);
 		} finally {
 			factory.close();
 		}
 	}
 
-//	TODO кладёт не туда куда я хочу
-	private static void processZIPFileList(ArrayList<File> list, Session session) {
-		for (File file : list) {
+	private static void processZIPFileList(ArrayList<File> zipList, Session session) {
+		
+		for (File zipFile : zipList) {
 			// unpack zip
-			String unzippedDir = "c:/temp/" + file.getName();
-			UnZip.unpack(file.getAbsolutePath(), unzippedDir, null);
-			File unzippedFile = new File(unzippedDir);
-			System.out.println(unzippedFile.exists());
-			System.out.println(Arrays.toString(unzippedFile.list()));
+			
+			String zipPath =zipFile.getAbsolutePath(); //current zip
+			String outDirPath = "c:/temp/" + zipFile.getName()+"/";//put here
+			File currentDir = new File(outDirPath);
+			System.out.println("mkdir:"+currentDir.mkdir());
+			String target = null;//unpack all
+			//list files in current zip
+			List<File> currentList = UnZip.unpack(zipPath, outDirPath, target);
+			
+			//do save to DB here
+			//need two parameters: Path to the file, Size
+			//Path to the file = outDirPath + name
+			processFB2FileList(currentList, session, zipFile);
+			
+						
+			//remove current directory
+			Utils.deleteNonEmptyDirectory(currentDir.getAbsolutePath());
+			currentDir.delete();
 		}
 		System.out.println("--------------");
 
@@ -55,15 +73,32 @@ public class GetFiles {
 	/**
 	 * parse list of 'fb2' files and save to session DB
 	 */
-	public static void processFB2FileList(List<File> list, Session session) {
-		session.beginTransaction();
+	public static void processFB2FileList(List<File> list, Session session, File zipFile) {
+		//TODO open session save
+//		session.beginTransaction();
 		for (File file : list) {
 			if (file.exists() && file.isFile() && file.getName().endsWith(".fb2")) {
 				Book book = ManualParse.getBook(file);
-				session.save(book);
+				book.setSize(getSize(file));
+				book.setFileName(file.getName());
+				if(zipFile!=null)
+					book.setPath(zipFile.getAbsolutePath());
+				System.out.println(book);
+				
+//				session.save(book);
 			}
 		}
-		session.getTransaction().commit();
+//		session.getTransaction().commit();
+	}
+	
+	static long getSize(File file){
+		long size = 0;
+		try {
+			size = Files.size(file.toPath());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return size;
 	}
 
 	public static void listOfFiles(File dir) {

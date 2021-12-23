@@ -3,10 +3,13 @@ package ru.bas;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.File;
-import java.lang.reflect.Method;
+import java.net.URL;
+import java.nio.file.Path;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import ru.bas.zip.UnZip;
 
 class ManualParseTest {
 
@@ -26,19 +29,31 @@ class ManualParseTest {
 	@Test
 	final void getBookTest() {
 		String relPath = "/testLib/Frejd_Zigmund_Infantil'noe_vozvraschenie_totema.fb2";
-//		String relPath = "/testLib/Chekmaev_Sergej_Kogda_ischezli_derev'ja.fb2";
 
 		String url = ManualParse.class.getResource(relPath).getFile();
 		File file = new File(url);
-		String expected = "Book [id=0, lastName=Фрейд, firstName=Зигмунд, bookTitle=Инфантильное "
-				+ "возвращение тотема, genre=sci_psychology, annotation=Зигмунд Фрейд. "
-				+ "Инфантильное возвращение тотема>, keywords=Freud, Фрейд, психоанализ, психотерапия, "
-				+ "невроз, невротик, истерия, date=, lang=ru]";
-
 		Book book = ManualParse.getBook(file);
-		assertEquals(expected, book.toString());
+		String expected = "Зигмунд";
+		System.out.println("----"+book.getFirstName());
+		assertEquals(expected, book.getFirstName());
 	}
 	
 	
+	@Test
+	final void cutTagBlock() {
+		//	private static String cutTagBlock(InputStream targetStream, String tag, String enc)
+		URL path = getClass().getResource("/testLib/books2.zip");
+		File zipFile = new File(path.getPath());
+		UnZip.unpack(zipFile.getAbsolutePath(), "c:/temp/", "brin.fb2");
+		
+		File file = new File("c:/temp/" + "brin.fb2");
+
+		Book book = ManualParse.getBook(file);
+		String expected="ДЭВИД";
+		String actual = book.getFirstName();
+		
+		assertEquals(expected, actual);
+	
+	}
 
 }

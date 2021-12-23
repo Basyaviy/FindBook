@@ -116,11 +116,17 @@ public class ManualParse {
 			while (scanner.hasNext()) {
 				line = scanner.nextLine();
 				if (bInBlock) {
-					if (line.contains(closeTag)) {
-						line = line.substring(openTag.length(), line.indexOf(closeTag) );
+					if (line.contains(openTag)&&line.contains(closeTag)) {
+						line = line.substring(closeTag.length(), line.indexOf(closeTag) );
 						sb.append(line);
 						break;
 					}
+					if (line.contains(closeTag)) {
+						line = line.substring(0, line.indexOf(closeTag) );
+						sb.append(line);
+						break;
+					}
+					
 					sb.append(line);
 				}
 				if (line.contains(openTag)) {

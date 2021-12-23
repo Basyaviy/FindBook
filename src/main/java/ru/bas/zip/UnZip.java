@@ -1,9 +1,15 @@
 package ru.bas.zip;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipInputStream;
@@ -19,6 +25,7 @@ import java.util.zip.ZipOutputStream;
 public class UnZip {
 	private static final int BUFFER_SIZE = 8192;
 	private static final String CS = "IBM866";
+	final static String workDir = "c:/temp/";
 
 	public static void main(String[] args) {
 		String path = UnZip.class.getResource("/").getPath();
@@ -72,7 +79,10 @@ public class UnZip {
  * @param outDirPath - c:/temp/
  * @param target - example.txt
  * */
-	public static void unpack(String zipPath, String outDirPath, String target) {
+	public static List<File> unpack(String zipPath, String outDirPath, String target) {
+		List<File> list = new ArrayList<>();
+		if(outDirPath==null)
+			outDirPath=workDir;
 		try (ZipInputStream zin = new ZipInputStream(new FileInputStream(zipPath))) {
 			ZipEntry entry;
 			String name;
@@ -81,22 +91,27 @@ public class UnZip {
 
 				name = entry.getName(); // получим название файла
 				size = entry.getSize(); // получим его размер в байтах
-				System.out.printf("File name: %s \t File size: %d \n", name, size);
+//				System.out.printf("File name: %s \t File size: %d \n", name, size);
 				//if target is null, unpack all
 				if(target==null || target.equalsIgnoreCase(name)) {
+					list.add(new File(outDirPath+name));
 					// распаковка
+					int len = 0;
+					byte[] bArr = new byte[8192];
 					FileOutputStream fout = new FileOutputStream(outDirPath + name);
-					for (int c = zin.read(); c != -1; c = zin.read()) {
-						fout.write(c);
+					while ((len = zin.read(bArr)) != -1) {
+						fout.write(bArr, 0, len);
 					}
 					fout.flush();
 					zin.closeEntry();
 					fout.close();
+					
 				}
 			}
 		} catch (IOException ex) {
-			System.out.println(ex.getMessage());
+			ex.printStackTrace();
 		}
+		return list;
 	}
 
 	
