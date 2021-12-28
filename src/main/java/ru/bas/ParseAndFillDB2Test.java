@@ -5,19 +5,25 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
+import ru.bas.entity.Book;
 import ru.bas.zip.UnZip;
 import ru.bas.zip.Utils;
 
-public class GetFiles {
+/**
+ * That class observe folders and zip files in root directory, 
+ * find fb2 files, parse them and fill the table in DB
+ *   
+ * @author bas
+ *
+ */
+
+public class ParseAndFillDB2Test {
 	private static ArrayList<File> listFB2 = new ArrayList<>();
 	private static ArrayList<File> listZIP = new ArrayList<>();
 	// init sessionFactory
@@ -29,15 +35,16 @@ public class GetFiles {
 	 * getting Book object write to DB
 	 */
 	public static void main(String[] args) {
-		URL url = GetFiles.class.getResource("/testLib");
+		URL url = ParseAndFillDB2Test.class.getResource("/testLib");
 		File dir = new File(url.getPath());
 		listOfFiles(dir);
 
 		Session session = factory.getCurrentSession();
-
 		try {
+			session.beginTransaction();
 			processFB2FileList(listFB2, session, null);
 			processZIPFileList(listZIP, session);
+			session.getTransaction().commit();
 		} finally {
 			factory.close();
 		}
@@ -73,25 +80,28 @@ public class GetFiles {
 	/**
 	 * parse list of 'fb2' files and save to session DB
 	 */
-	public static void processFB2FileList(List<File> list, Session session, File zipFile) {
+	private static void processFB2FileList(List<File> list, Session session, File zipFile) {
 		//TODO open session save
-//		session.beginTransaction();
+		
 		for (File file : list) {
 			if (file.exists() && file.isFile() && file.getName().endsWith(".fb2")) {
 				Book book = ManualParse.getBook(file);
 				book.setSize(getSize(file));
 				book.setFileName(file.getName());
-				if(zipFile!=null)
+				if(zipFile==null) {
+					book.setPath(file.getAbsolutePath());
+				}else {
 					book.setPath(zipFile.getAbsolutePath());
+				}
 				System.out.println(book);
 				
-//				session.save(book);
+				session.save(book);
 			}
 		}
-//		session.getTransaction().commit();
+		
 	}
 	
-	static long getSize(File file){
+	private static long getSize(File file){
 		long size = 0;
 		try {
 			size = Files.size(file.toPath());

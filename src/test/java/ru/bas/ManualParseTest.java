@@ -9,6 +9,7 @@ import java.nio.file.Path;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import ru.bas.entity.Book;
 import ru.bas.zip.UnZip;
 
 class ManualParseTest {

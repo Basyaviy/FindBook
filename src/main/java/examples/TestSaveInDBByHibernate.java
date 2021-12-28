@@ -6,7 +6,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
-import ru.bas.Book;
+import ru.bas.entity.Book;
 import ru.bas.ManualParse;
 
 public class TestSaveInDBByHibernate {
