@@ -73,8 +73,9 @@
 	<dependency>
 	    <groupId>org.springframework</groupId>
 	    <artifactId>spring-tx</artifactId>
-	    <version>5.3.14</version>
+	    <version>5.2.19.RELEASE</version>
 	</dependency>
+
 
 
     <dependency>

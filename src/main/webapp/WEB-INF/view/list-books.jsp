@@ -14,10 +14,14 @@
 	
 	<div id="wrapper">
 		<div id="header">
-			<h2>Test - just out all books in DB</h2>
+			<h2>Test - just out all books from DB</h2>
 			<div id="container">
 				<div id="content">
-			
+					<!-- put new button: reFill all records -->
+					<input type="button" value="reFillDB"
+						onclick="window.location.href='fillDB'; return false;"
+						class="add-button"
+					/>
 					<!-- add  our html table here -->
 					<table>
 						<tr>

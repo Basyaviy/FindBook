@@ -2,6 +2,8 @@ package ru.bas.dao.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import ru.bas.FileParser;
 import ru.bas.dao.BookDAO;
 import ru.bas.entity.Book;
+import ru.bas.zip.Utils;
 
 @Controller
 @RequestMapping("/book")
@@ -26,7 +29,7 @@ public class BookController {
 	public String fillDB() {
 		List<Book> bookList = FileParser.getBookList();
 		bookDAO.saveBooks(bookList);
-		return "list-books";
+		return "redirect:/book/list";
 	}
 	
 	
@@ -56,11 +59,24 @@ public class BookController {
 		return "book-form";
 	}
 	
-	@PostMapping("saveBook")
+	@PostMapping("/saveBook")
 	public String saveBook(@ModelAttribute("book") Book theBook) {
 		bookDAO.saveBook(theBook);
 		
 		return "redirect:/book/list";
 	}
+	
+	@GetMapping("/download")
+	public void downloadBook(@RequestParam("bookId") int theId, HttpServletResponse response) {
+		
+		//get book by Id
+		Book theBook = bookDAO.getBook(theId);
+
+		//find the book and write to response
+		Utils.addBookToResponse(response, theBook);
+	}
+
+
+	
 
 }

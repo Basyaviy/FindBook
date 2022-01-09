@@ -46,7 +46,8 @@ public class FileParser {
 			String zipPath =zipFile.getAbsolutePath(); //current zip
 			String outDirPath = "c:/temp/" + zipFile.getName()+"/";//put here
 			File currentDir = new File(outDirPath);
-			System.out.println("mkdir:"+currentDir.mkdir());
+			boolean createDir = currentDir.mkdir();
+//			System.out.println("mkdir:"+createDir);
 			String target = null;//unpack all
 			//list files in current zip
 			List<File> currentList = UnZip.unpack(zipPath, outDirPath, target);
@@ -77,7 +78,7 @@ public class FileParser {
 				}else {
 					book.setPath(zipFile.getAbsolutePath());
 				}
-				System.out.println(book);
+//				System.out.println(book);
 				tempBookList.add(book);
 			}
 		}
