@@ -17,11 +17,13 @@ public interface BookDAO {
 	
 	public List<Book> getBooks();
 
+	public List<Book> getBooks(String searchString);
 	public Book getBook(int theId);
 
 	public void saveBook(Book theBook);
 
 	public void saveBooks(List<Book> bookList);
+
 	
 
 }

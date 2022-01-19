@@ -1,2 +1,7 @@
-/target/
+.settings/
 src/main/java/examples/
+target/
+.classpath
+.project
+
+

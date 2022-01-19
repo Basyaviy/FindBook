@@ -10,11 +10,17 @@ import javax.servlet.http.HttpServletResponse;
 
 import ru.bas.entity.Book;
 
-import java.io.File;
-
 public class Utils {
-	final static private String TEMP_DIRECTORY = "c:/temp/";
+	final static private String TEMP_DIRECTORY;
 	
+	static {
+		TEMP_DIRECTORY = System.getProperty("java.io.tmpdir")+"findbook/";
+		File file = new File(TEMP_DIRECTORY);
+		if(!file.exists()) {
+			file.mkdirs();
+		}
+			
+	}
 	
 	public static String getTempDirectory() {
 		return TEMP_DIRECTORY;
@@ -39,13 +45,13 @@ public class Utils {
 		System.out.println("fileName: "+fileName);
 		System.out.println("path: "+path);
 		if(path.endsWith(".zip")) {
-			List<File> list = UnZip.unpack(path, "c:/temp/", fileName);
+			List<File> list = UnZip.unpack(path, getTempDirectory(), fileName);
 			if(list.get(0)!=null) {
 				System.out.println("===>I have a file: "+list.get(0));
 				
-				addFileToStream(response, "C:/temp/"+fileName, theBook.getFileName());
+				addFileToStream(response, getTempDirectory()+fileName, theBook.getFileName());
 				//remove file from temp folder
-				new File("C:/temp/"+fileName).delete();
+				new File(getTempDirectory()+fileName).delete();
 				
 			}		
 		}else if(path.endsWith(".fb2")) {

@@ -22,6 +22,7 @@ import ru.bas.zip.Utils;
 public class FileParser {
 	private static ArrayList<File> listFB2 = new ArrayList<>();
 	private static ArrayList<File> listZIP = new ArrayList<>();
+	
 
 	/*
 	 * Look into directory, collect two Lists with 'fb2' and 'zip' extensions after
@@ -44,7 +45,7 @@ public class FileParser {
 			// unpack zip
 			
 			String zipPath =zipFile.getAbsolutePath(); //current zip
-			String outDirPath = "c:/temp/" + zipFile.getName()+"/";//put here
+			String outDirPath = System.getProperty("java.io.tmpdir")+"/" + zipFile.getName()+"/";//put here
 			File currentDir = new File(outDirPath);
 			boolean createDir = currentDir.mkdir();
 //			System.out.println("mkdir:"+createDir);
@@ -78,7 +79,7 @@ public class FileParser {
 				}else {
 					book.setPath(zipFile.getAbsolutePath());
 				}
-//				System.out.println(book);
+				System.out.println(book);
 				tempBookList.add(book);
 			}
 		}

@@ -4,13 +4,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.io.File;
 import java.net.URL;
-import java.nio.file.Path;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import ru.bas.entity.Book;
 import ru.bas.zip.UnZip;
+import ru.bas.zip.Utils;
 
 class ManualParseTest {
 
@@ -45,9 +45,9 @@ class ManualParseTest {
 		//	private static String cutTagBlock(InputStream targetStream, String tag, String enc)
 		URL path = getClass().getResource("/testLib/books2.zip");
 		File zipFile = new File(path.getPath());
-		UnZip.unpack(zipFile.getAbsolutePath(), "c:/temp/", "brin.fb2");
+		UnZip.unpack(zipFile.getAbsolutePath(), Utils.getTempDirectory(), "brin.fb2");
 		
-		File file = new File("c:/temp/" + "brin.fb2");
+		File file = new File(Utils.getTempDirectory() + "brin.fb2");
 
 		Book book = ManualParse.getBook(file);
 		String expected="ДЭВИД";

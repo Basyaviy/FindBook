@@ -26,6 +26,18 @@ public class BookDAOImpl implements BookDAO{
 		List<Book>  list = theQuery.getResultList();
 		return list;
 	}
+	
+	@Override
+	@Transactional
+	public List<Book> getBooks(String searchString) {
+		Session session = sessionFactory.getCurrentSession();
+		Query<Book> theQuery = session.createQuery("from Book where book_title like :searchString "
+				+ "or first_name like :searchString "
+				+ "or last_name like :searchString ", Book.class);
+		theQuery.setParameter("searchString", "%"+searchString+"%");
+		List<Book>  list = theQuery.getResultList();
+		return list;
+	}
 
 
 	@Override

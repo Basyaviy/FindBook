@@ -2,6 +2,7 @@ package ru.bas.dao.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,6 +75,22 @@ public class BookController {
 
 		//find the book and write to response
 		Utils.addBookToResponse(response, theBook);
+	}
+	
+	@RequestMapping("/processSearchForm")
+	public String searchBooks(HttpServletRequest request,
+			Model theModel) {
+		String srch = request.getParameter("searchBox");
+		System.out.println("===>SearchString: "+request.getParameter("searchBox"));
+		
+		
+//		//get books by search from the dao
+		List<Book> theBooks = bookDAO.getBooks(srch);
+//		
+//		//add the book to the model (name, value)
+		theModel.addAttribute("books", theBooks);
+		
+		return "list-books";
 	}
 
 

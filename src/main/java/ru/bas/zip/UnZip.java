@@ -23,19 +23,19 @@ import java.util.zip.ZipOutputStream;
 public class UnZip {
 	private static final int BUFFER_SIZE = 8192;
 	private static final String CS = "IBM866";
-	final static String workDir = "c:/temp/";
 
 	public static void main(String[] args) {
 		String path = UnZip.class.getResource("/").getPath();
 		String zipPath = path +  "compressed2.zip";
 		String filename = "listOfFiles.txt";
-		unpack(zipPath, "C:/temp", filename);
+		unpack(zipPath, Utils.getTempDirectory(), filename);
 	}
 	
 	/**
 	 * make archive on 'zipPath' with list of 'srcFiles'
 	 * */
 	public static void multipleZip(String zipPath, List<File> srcFiles) {
+		
 		FileOutputStream fos = null;
 		try {
 			fos = new FileOutputStream(zipPath);
@@ -65,7 +65,7 @@ public class UnZip {
 	
 	
 	public static void unpack(String zipPath) {
-		String outDirPath = "c:/temp/";
+		String outDirPath = Utils.getTempDirectory();
 		unpack(zipPath, outDirPath, null);		
 	}
 	public static void unpack(String zipPath, String outDirPath) {
@@ -74,13 +74,13 @@ public class UnZip {
 	
 /**
  * @param zipPath - c:/arch.zip
- * @param outDirPath - c:/temp/
+ * @param outDirPath - temp - directory
  * @param target - example.txt
  * */
 	public static List<File> unpack(String zipPath, String outDirPath, String target) {
 		List<File> list = new ArrayList<>();
 		if(outDirPath==null)
-			outDirPath=workDir;
+			outDirPath=Utils.getTempDirectory();
 		try (ZipInputStream zin = new ZipInputStream(new FileInputStream(zipPath))) {
 			ZipEntry entry;
 			String name;

@@ -11,11 +11,11 @@ import org.junit.jupiter.api.Test;
 
 class UnZipTest {
 	final String resourcePath = getClass().getResource("/").getPath();
-	final static String workDir = "c:/temp/";
+	final static String workDir = Utils.getTempDirectory();
 
 	@Test
 	final void testMultipleZip() {
-		Utils.deleteNonEmptyDirectory(workDir);
+		//Utils.deleteNonEmptyDirectory(workDir);
 		File zipFile = new File(workDir+"test.zip");
 //		prepare data for packing
 		List<File> listFiles = new ArrayList<>();
@@ -23,6 +23,7 @@ class UnZipTest {
 		for(String str:expected) {
 			listFiles.add(new File(resourcePath + str));
 		}
+		
 		
 //		packing
 		UnZip.multipleZip(zipFile.getAbsolutePath(), listFiles);
