@@ -64,13 +64,12 @@ public class BookDAOImpl implements BookDAO{
 	public void saveBooks(List<Book> bookList) {
 		Session session = sessionFactory.getCurrentSession();
 		//truncateDB
-		session.createSQLQuery("truncate table Book").executeUpdate();
-		System.out.println("From saveBooks==>" + bookList.get(0));
+		session.createQuery("delete from Book").executeUpdate();
 		//fillDB
 		for(Book book:bookList) {
 			session.save(book);
+			
 		}
-		
 	}
 
 }

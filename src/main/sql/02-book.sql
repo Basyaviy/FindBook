@@ -1,10 +1,6 @@
 CREATE DATABASE  IF NOT EXISTS `my_schema`;
 USE `my_schema`;
 
---
--- Table structure for table `student`
---
-
 DROP TABLE IF EXISTS `book`;
 
 CREATE TABLE `book` (
