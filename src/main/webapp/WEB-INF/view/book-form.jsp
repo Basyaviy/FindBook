@@ -24,6 +24,14 @@
 		
 			<!-- need to associate this data with customer id -->
 			<form:hidden path="id" />
+			<form:hidden path="genre" />
+			<form:hidden path="annotation" />
+			<form:hidden path="keywords" />
+			<form:hidden path="date" />
+			<form:hidden path="lang" />
+			<form:hidden path="path" />
+			<form:hidden path="fileName" />
+			<form:hidden path="size" />
 		
 			<table>
 				<tbody>

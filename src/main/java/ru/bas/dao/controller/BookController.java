@@ -36,7 +36,6 @@ public class BookController {
 	
 	@GetMapping("/list")
 	public String listBooks(Model theModel) {
-		
 //		//get books from the dao
 		List<Book> theBooks = bookDAO.getBooks();
 //		
@@ -52,7 +51,6 @@ public class BookController {
 		
 		//get the book from database
 		Book theBook = bookDAO.getBook(theId);
-		
 		//set book as a model attribute to pre-populate the form
 		theModel.addAttribute("book", theBook);
 
@@ -63,7 +61,6 @@ public class BookController {
 	@PostMapping("/saveBook")
 	public String saveBook(@ModelAttribute("book") Book theBook) {
 		bookDAO.saveBook(theBook);
-		
 		return "redirect:/book/list";
 	}
 	
@@ -81,7 +78,6 @@ public class BookController {
 	public String searchBooks(HttpServletRequest request,
 			Model theModel) {
 		String srch = request.getParameter("searchBox");
-		System.out.println("===>SearchString: "+request.getParameter("searchBox"));
 		
 		
 //		//get books by search from the dao

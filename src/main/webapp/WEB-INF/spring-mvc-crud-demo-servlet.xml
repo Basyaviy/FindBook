@@ -31,7 +31,8 @@
 	<bean id="myDataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
           destroy-method="close">
         <property name="driverClass" value="com.mysql.cj.jdbc.Driver" />
-        <property name="jdbcUrl" value="jdbc:mysql://mysqldb:3306/my_schema?allowPublicKeyRetrieval=true&amp;useSSL=false&amp;serverTimezone=UTC" />
+        <property name="jdbcUrl" value="jdbc:mysql://localhost:3306/my_schema?allowPublicKeyRetrieval=true&amp;useSSL=false&amp;serverTimezone=UTC" />
+        <!-- <property name="jdbcUrl" value="jdbc:mysql://mysqldb:3306/my_schema?allowPublicKeyRetrieval=true&amp;useSSL=false&amp;serverTimezone=UTC" />-->
         <property name="user" value="buser" />
         <property name="password" value="buser" /> 
 
