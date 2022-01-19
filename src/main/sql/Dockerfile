@@ -1,5 +1,5 @@
 FROM mysql:8.0
-COPY ./src/main/sql/02-book.sql /docker-entrypoint-initdb.d
+COPY ./02-book.sql /docker-entrypoint-initdb.d
 ENV MYSQL_ROOT_PASSWORD=1234
 ENV MYSQL_USER=buser
 ENV MYSQL_PASSWORD=buser
