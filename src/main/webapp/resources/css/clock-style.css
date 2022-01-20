@@ -1,0 +1,60 @@
+
+.clock{
+    width:9rem;
+    height: 9rem;
+    display: flex;  
+    justify-content: center;
+    align-items: center;
+    background: url(../images/round.png) no-repeat;
+    background-size: 9rem;
+}
+
+.clock:before{
+    content:"";
+    position:absolute;
+    width: 0.3125rem;
+    height: 0.3125rem;
+    background: #000;
+    border-radius: 50%;
+    z-index: 999;
+}
+
+.clock .hour,
+.clock .min,
+.clock .sec{
+    position: absolute;
+}
+
+.hr, .mn, .sc{
+    display: flex;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+.hr:before{
+    content:"";
+    position: absolute;
+    width: 0.187rem;
+    height: 2rem;
+    background-color: #000;
+    border-radius: 4px ;
+}
+
+
+.mn:before{
+    content:"";
+    position: absolute;
+    width: 0.125rem;
+    height: 3.25rem;
+    background-color: #000;
+    border-radius: 4px ;
+}
+
+.sc:before{
+    content:"";
+    position: absolute;
+    width: 0.0625rem;
+    height: 4.375rem;
+    background-color: #000;
+    border-radius: 4px ;
+}
