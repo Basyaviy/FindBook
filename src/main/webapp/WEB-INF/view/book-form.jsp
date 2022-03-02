@@ -32,6 +32,7 @@
 			<form:hidden path="path" />
 			<form:hidden path="fileName" />
 			<form:hidden path="size" />
+			<form:hidden path="library" />
 		
 			<table>
 				<tbody>

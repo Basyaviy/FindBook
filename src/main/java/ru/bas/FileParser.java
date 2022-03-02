@@ -2,6 +2,7 @@ package ru.bas;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.util.ArrayList;
@@ -20,17 +21,29 @@ import ru.bas.zip.Utils;
  */
 
 public class FileParser {
-	private static ArrayList<File> listFB2 = new ArrayList<>();
-	private static ArrayList<File> listZIP = new ArrayList<>();
+	private static ArrayList<File> listFB2;
+	private static ArrayList<File> listZIP;
 	
 
 	/*
 	 * Look into directory, collect two Lists with 'fb2' and 'zip' extensions after
 	 * getting Book object write to DB
 	 */
-	public static List<Book> getBookList(){
-		URL url = FileParser.class.getResource("/testLib");
-		File dir = new File(url.getPath());
+	public static List<Book> getBookList(String path){
+		listFB2 = new ArrayList<>();
+		listZIP = new ArrayList<>();
+		
+		File dir = null;
+		if(path==null || path =="") {
+			 URL url = FileParser.class.getResource("/testLib");
+			 dir = new File(url.getPath());
+			 System.out.println("===>URL:"+FileParser.class.getResource("/testLib").toString());
+		}else {
+			dir = new File(path);
+
+		}
+		
+		
 		listOfFiles(dir);
 		List<Book> bookList = new ArrayList<>();
 		bookList.addAll(processFB2FileList(listFB2,  null));
@@ -45,7 +58,7 @@ public class FileParser {
 			// unpack zip
 			
 			String zipPath =zipFile.getAbsolutePath(); //current zip
-			String outDirPath = System.getProperty("java.io.tmpdir")+"/" + zipFile.getName()+"/";//put here
+			String outDirPath = Utils.getTempDirectory()+ zipFile.getName()+File.separator;//put here
 			File currentDir = new File(outDirPath);
 			boolean createDir = currentDir.mkdir();
 //			System.out.println("mkdir:"+createDir);

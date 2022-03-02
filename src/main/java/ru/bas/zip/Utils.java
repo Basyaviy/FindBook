@@ -14,12 +14,17 @@ public class Utils {
 	final static private String TEMP_DIRECTORY;
 	
 	static {
-		TEMP_DIRECTORY = System.getProperty("java.io.tmpdir")+"findbook/";
+		StringBuilder sb = new StringBuilder();
+		sb.append(System.getProperty("java.io.tmpdir"));
+		if(!sb.toString().endsWith(File.separator))
+			sb.append(File.separator);
+		sb.append("findbook");
+		sb.append(File.separator);
+		TEMP_DIRECTORY = sb.toString();
 		File file = new File(TEMP_DIRECTORY);
 		if(!file.exists()) {
 			file.mkdirs();
 		}
-			
 	}
 	
 	public static String getTempDirectory() {
@@ -46,6 +51,7 @@ public class Utils {
 		System.out.println("path: "+path);
 		if(path.endsWith(".zip")) {
 			List<File> list = UnZip.unpack(path, getTempDirectory(), fileName);
+			System.out.println("===>getTempDirectory():"+getTempDirectory());
 			if(list.get(0)!=null) {
 				System.out.println("===>I have a file: "+list.get(0));
 				

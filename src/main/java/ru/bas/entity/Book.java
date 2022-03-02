@@ -1,10 +1,13 @@
 package ru.bas.entity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -29,6 +32,11 @@ public class Book {
 	@Column(name="id")
 	private int id;
 	
+	//deleting Book not delete referenced Library
+	@ManyToOne(cascade= {CascadeType.PERSIST, CascadeType.DETACH, 
+			 CascadeType.REFRESH, CascadeType.MERGE})
+	@JoinColumn(name="library_id")
+	private Library library;
 
 	@Column(name="last_name")
 	private String lastName;
@@ -87,6 +95,14 @@ public class Book {
 		this.keywords = keywords;
 		this.date = date;
 		this.lang = lang;
+	}
+	
+	public Library getLibrary() {
+		return library;
+	}
+
+	public void setLibrary(Library theLibrary) {
+		library = theLibrary;		
 	}
 	
 	public String getFileName() {
@@ -210,5 +226,6 @@ public class Book {
 				+ ", genre=" + genre + ", annotation=" + annotation + ", keywords=" + keywords + ", date=" + date
 				+ ", lang=" + lang + ", path=" + path + ", fileName=" + fileName + ", size=" + size + "]";
 	}
+
 
 }

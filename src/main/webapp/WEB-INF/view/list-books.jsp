@@ -27,8 +27,8 @@
                         </form>
                     </div>
                     <!-- reFill all records -->
-                    <input type="button" value="reFillDB"
-                    onclick="window.location.href='fillDB'; return false;"
+                    <input type="button" value="Подключение библиотек"
+                    onclick="window.location.href='../lib/list'; return false;"
                     class="refill-button"
                     />
                 </div>
@@ -51,7 +51,7 @@
 				<th>Title</th>
 				<th>Action</th>
 				
-				<!-- loop over and print our customers -->
+				<!-- loop over and print our books -->
 				<c:forEach var="tempBook" items="${books}">
 					<!--  construct an "update" link with book id -->
 					<c:url var="updateLink" value="/book/showFormForUpdate">
@@ -71,8 +71,7 @@
 						
 						<td>
 							<!--  display the update link -->
-							<a href="${updateLink}">Update</a>
-							|
+
 							<a href="${downloadLink}">Download</a>
 						</td>
 					</tr>
@@ -82,6 +81,6 @@
 
     </div>
 	
-	<script src="${pageContext.request.contextPath}/resources/js/script.js"></script>
+	<script src="${pageContext.request.contextPath}/resources/js/script-clock.js"></script>
 </body>
 </html>

@@ -17,33 +17,42 @@ import org.springframework.web.bind.annotation.RequestParam;
 import ru.bas.FileParser;
 import ru.bas.dao.BookDAO;
 import ru.bas.entity.Book;
+import ru.bas.entity.Library;
 import ru.bas.zip.Utils;
 
 @Controller
 @RequestMapping("/book")
 public class BookController {
+	private boolean first_enter=true;
+	
 	//need to inject the customer dao
 	@Autowired
 	private BookDAO bookDAO;
 	
+	@Deprecated
 	@GetMapping("/fillDB")
 	public String fillDB() {
-		List<Book> bookList = FileParser.getBookList();
+		List<Book> bookList = FileParser.getBookList(null);
 		bookDAO.saveBooks(bookList);
 		return "redirect:/book/list";
 	}
-	
-	
+
 	@GetMapping("/list")
 	public String listBooks(Model theModel) {
 //		//get books from the dao
 		List<Book> theBooks = bookDAO.getBooks();
-//		
+//		TODO
+		if(theBooks.size()==0&&first_enter) {
+			Library testLib = LibraryController.getTestLib();
+			
+		}
+		
 //		//add the book to the model (name, value)
 		theModel.addAttribute("books", theBooks);
 		
 		return "list-books";
 	}
+
 	
 	@GetMapping("/showFormForUpdate")
 	public String showFormForUpdate(@RequestParam("bookId") int theId,

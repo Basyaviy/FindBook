@@ -45,7 +45,6 @@ public class BookDAOImpl implements BookDAO{
 	public Book getBook(int theId) {
 		Session session = sessionFactory.getCurrentSession();
 		Book theBook = session.get(Book.class, theId);
-		System.out.println("======>getBook:"+theBook);
 		return theBook;
 	}
 
@@ -71,5 +70,4 @@ public class BookDAOImpl implements BookDAO{
 			
 		}
 	}
-
 }

@@ -6,6 +6,8 @@ services:
       - "8080:8080"
     depends_on:
       - mysqldb
+    volumes:
+      - d:\BAS\github\Java\findbook\outLib\:/outLib/
   mysqldb:
     build: ./src/main/sql
     volumes:

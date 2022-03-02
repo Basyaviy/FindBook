@@ -1,5 +1,19 @@
-CREATE DATABASE  IF NOT EXISTS `my_schema`;
-USE `my_schema`;
+DROP SCHEMA IF EXISTS `my_schema`;
+
+CREATE SCHEMA `my_schema`;
+
+use `my_schema`;
+
+
+DROP TABLE IF EXISTS `library`;
+
+CREATE TABLE `library` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `path` varchar(512) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  
+  UNIQUE KEY `PATHbookbook_UNIQUE` (`path`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4;
 
 DROP TABLE IF EXISTS `book`;
 
@@ -16,6 +30,7 @@ CREATE TABLE `book` (
   `path` varchar(400) DEFAULT NULL,
   `file_name` varchar(200) DEFAULT NULL,
   `size` int(20) DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `library_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`library_id`) REFERENCES `library` (`id`) 
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4;
- 
